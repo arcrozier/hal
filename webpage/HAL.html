@@ -50,9 +50,9 @@
                         const $background = $('#background-img');
 
                         // sound effects
-                        const $ambient = $('#background-audio');
-                        const $shutdown = $('#shutdown');
-                        const $startup = $('#startup');
+                        const $ambient = document.getElementById('background-audio');
+                        const $shutdown = document.getElementById('shutdown');
+                        const $startup = document.getElementById('startup');
 
                         if (this.checked) {
                             const $lock = $(this).closest('.switch-group').find('.lock-box');
@@ -60,7 +60,7 @@
                             $lock.change();
                             $background.addClass('color');
 
-                            $shutdown.stop();
+                            $shutdown.pause();
                             $shutdown.currentTime = 0;
 
                             $startup.play();
@@ -71,7 +71,7 @@
                             $startup.pause();
                             $startup.currentTime = 0;
 
-                            $ambient.stop();
+                            $ambient.pause();
                             $ambient.currentTime = 0;
 
                             $shutdown.play();
