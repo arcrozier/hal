@@ -734,7 +734,7 @@ input:checked + .button::before {
 }
 
 @media screen and (max-width: 479px) {
-    .content {
+    .background {
         background-position: 50% 10%;
         background-size: 50%;
     }
