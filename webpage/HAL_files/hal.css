@@ -22,6 +22,7 @@
 }
 
 html {
+    height: 100%;
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%
@@ -429,30 +430,6 @@ label {
     background-color: #eeeeee
 }
 
-.w-container {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 940px
-}
-
-.w-container::before, .w-container::after {
-    content: " ";
-    display: table;
-    grid-column-start: 1;
-    grid-row-start: 1;
-    grid-column-end: 2;
-    grid-row-end: 2
-}
-
-.w-container::after {
-    clear: both
-}
-
-.w-container .w-row {
-    margin-left: -10px;
-    margin-right: -10px
-}
-
 /*.w-row::before, .w-row::after {
     content: " ";
     display: table;
@@ -466,32 +443,6 @@ label {
     display: none !important
 }
 
-/* medium HAL container */
-
-@media screen and (max-width: 1080px) {
-    .w-container {
-        max-width: 768px;
-    }
-}
-
-/* small HAL container */
-
-@media screen and (max-width: 767px) {
-
-    .w-row, .w-container .w-row {
-        margin-left: 0;
-        margin-right: 0
-    }
-}
-
-/* tiny HAL container */
-
-@media screen and (max-width: 479px) {
-    .w-container {
-        max-width: none
-    }
-}
-
 .body {
     background-color: #000;
 }
@@ -500,6 +451,7 @@ label {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: -1;
     background-image: url("hal_asset.png");
     background-position: 50% 50%;
     background-size: contain;
@@ -517,21 +469,23 @@ label {
 }
 
 .container {
-    position: static;
-    height: auto;
-    max-height: 100%;
-    max-width: 100%;
+    flex: 1;
     background-color: hsla(0, 0%, 100%, 0);
-    -o-object-fit: cover;
-    object-fit: cover;
 }
 
 .flex-container {
     display: flex;
     align-items: stretch;
     justify-content: flex-start;
-    flex-direction: row;
     flex-wrap: nowrap;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-column {
+    flex-direction: column;
 }
 
 .flex-button {
@@ -547,16 +501,13 @@ label {
     flex-grow: 1;
 }
 
-.input {
+.fixed {
     position: fixed;
-    left: 0;
-    top: auto;
-    right: 0;
-    bottom: 0;
+}
+
+.input {
     height: var(--input-height);
     background-color: hsla(0, 0%, 100%, 0.44);
-    -o-object-fit: fill;
-    object-fit: fill;
 }
 
 .submit-button {
@@ -574,7 +525,7 @@ label {
 
 
 .switch-group {
-    position: fixed;
+    position: absolute;
     left: auto;
     top: 5%;
     right: 3%;
@@ -710,8 +661,7 @@ input:checked + .button::before {
 
 .conversation {
     width: 50%;
-    height: 100vh;
-    max-height: 90%;
+    height: 100%;
     max-width: 400px;
     min-height: 50px;
     min-width: 200px;
@@ -723,7 +673,6 @@ input:checked + .button::before {
 
     .conversation {
         width: 100%;
-        height: 50vh;
         max-height: 50%;
         max-width: none;
         min-width: auto;

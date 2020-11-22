@@ -17,12 +17,13 @@
     <link href="HAL_files/hal_icon.png" rel="shortcut icon" type="image/x-icon">
     <link href="HAL_files/hal_icon.png" rel="apple-touch-icon">
 </head>
-<body class="body">
+<body class="body fill">
 <div id="background-img" class="fill background"></div>
 <audio id="startup" src="HAL_files/startup.mp3"></audio>
 <audio id="background-audio" src="HAL_files/ambient.mp3" loop></audio>
 <audio id="shutdown" src="HAL_files/shutdown.mp3"></audio>
-    <div class="container w-container">
+<div class="flex-container flex-column fill">
+    <div class="container fill">
         <div class="switch-group w-form">
             <form id="switch-group" name="switch-group" data-name="On Off Switch" class="switch-group">
                 <label class="lock">
@@ -64,7 +65,7 @@
                             $shutdown.currentTime = 0;
 
                             $startup.play();
-                            $startup.onended = function() {
+                            $startup.onended = function () {
                                 $ambient.play();
                             }
                         } else {
@@ -83,10 +84,10 @@
         </div>
         <div id="conversation-div" class="conversation"></div>
     </div>
-    <div id="input-div" class="input">
+    <div id="input-div" class="input fill">
         <div class="w-form">
             <form id="query-form" name="query" data-name="Query form" class="fill">
-                <div class="fill flex-container">
+                <div class="fill flex-container flex-row">
                     <div class="fill flex-input">
                         <label for="Input"></label>
                         <textarea placeholder="Say something to HAL..."
@@ -103,4 +104,5 @@
             </form>
         </div>
     </div>
+</div>
 </body>
