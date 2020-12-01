@@ -20,7 +20,7 @@
 <body class="body fill">
 <div id="background-img" class="fill background"></div>
 <audio id="startup" src="HAL_files/startup.mp3"></audio>
-<audio id="background-audio" src="HAL_files/ambient.mp3" loop></audio>
+<audio id="background-audio" src="HAL_files/ambient.mp3"></audio>
 <audio id="shutdown" src="HAL_files/shutdown.mp3"></audio>
 <div class="flex-container flex-column fill">
     <div class="container fill">
@@ -65,9 +65,19 @@
                             $shutdown.currentTime = 0;
 
                             $startup.play();
-                            $startup.onended = function () {
-                                $ambient.play();
-                            }
+                            $startup.addEventListener('timeupdate', function() {
+                                const buffer = .44;
+                                if (this.currentTime > this.duration - buffer) {
+                                    $ambient.play();
+                                }
+                            });
+                            $ambient.addEventListener('timeupdate', function () {
+                                const buffer = .44;
+                                if (this.currentTime > this.duration - buffer) {
+                                    this.currentTime = 0;
+                                    this.play();
+                                }
+                            });
                         } else {
                             $startup.pause();
                             $startup.currentTime = 0;

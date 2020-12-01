@@ -459,8 +459,8 @@ label {
     background-clip: border-box;
     -webkit-filter: grayscale(100%);
     filter: grayscale(1);
-    transition: -webkit-filter 5s ease, filter 5s ease;
-    -webkit-transition: -webkit-filter 5s ease, filter 5s ease;
+    transition: -webkit-filter 10s ease, filter 10s ease;
+    -webkit-transition: -webkit-filter 10s ease, filter 10s ease;
 }
 
 .background.color {

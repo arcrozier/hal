@@ -22,10 +22,10 @@
 <audio id="startup" src="{% static 'chatbot/startup.mp3' %}"></audio>
 <audio id="background-audio" src="{% static 'chatbot/ambient.mp3' %}"></audio>
 <audio id="shutdown" src="{% static 'chatbot/shutdown.mp3' %}"></audio>
-<div class="flex-container flex-column fill">
+<div id="window" class="flex-container flex-column fill" data-user-id="{{ instance_id }}">
     <div class="container fill">
         <div class="switch-group w-form">
-            <form id="switch-group" name="switch-group" data-name="On Off Switch" class="switch-group">
+            <form id="switch-group" name="switch-group" data-name="On Off Switch" class="switch-group" action="" method="post"> {% csrf_token %}
                 <label class="lock">
                     <input class="lock-box" type="checkbox" checked>
                     <span class="button"></span>
@@ -54,6 +54,14 @@
                         const $ambient = document.getElementById('background-audio');
                         const $shutdown = document.getElementById('shutdown');
                         const $startup = document.getElementById('startup');
+
+                        const instanceId = document.getElementById('window').getAttribute('data-user-id');
+
+                        console.log("submitting");
+                        $.post("{{ request.build_absolute_uri }}" + instanceId + '/status', 'on', function (response) {
+                            console.log(response);
+
+                        });
 
                         if (this.checked) {
                             const $lock = $(this).closest('.switch-group').find('.lock-box');
@@ -96,7 +104,8 @@
     </div>
     <div id="input-div" class="input fill">
         <div class="w-form">
-            <form id="query-form" name="query" data-name="Query form" class="fill">
+            <form id="query-form" name="query" data-name="Query form" class="fill" action="" method="post">
+                {% csrf_token %}
                 <div class="fill flex-container flex-row">
                     <div class="fill flex-input">
                         <label for="Input"></label>
@@ -107,8 +116,21 @@
                                   class="fill w-input"></textarea>
                     </div>
                     <div class="fill flex-button">
-                        <input type="button" value="" data-wait=""
+                        <input id="submit-button" type="submit" value="" data-wait=""
                                class="submit-button w-button">
+                        <script>
+                            $('#query-form').submit(function(e) {
+                                const text = $.trim($('#Input').val());
+                                console.log("submitting " + text);
+                                if (text !== "") {
+                                    const instanceId = document.getElementById('window').getAttribute('data-user-id');
+                                    $.post('{{ request.build_absolute_uri }}' + instanceId + '/input', text, function(response) {
+                                        console.log(response);
+                                    });
+                                }
+                                e.preventDefault();
+                            });
+                        </script>
                     </div>
                 </div>
             </form>
