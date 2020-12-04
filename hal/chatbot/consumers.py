@@ -14,6 +14,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
         super().__init__(*args, **kwargs)
         self.model = None
         self.on = False
+        self.conversation = ''
 
     async def connect(self):
         await self.accept()
@@ -42,26 +43,29 @@ class MessageConsumer(AsyncWebsocketConsumer):
                 self.on = False
         if category == "message" and self.on:
             # may want to store message history and pass it to the model rather than just the latest message
-            sample = self.interact_model(message)
+            self.conversation = '\n'.join([self.conversation, message])
+            sample = self.interact_model(self.conversation)
             # todo does not seem to handle multilines
-            find_eot = re.match(r'/.+?(?=<\|endoftext\|>|$)/', sample)
-            find_sentence = re.match(r'/((?:.*?\. ){3}).*$', sample)
+            find_eot = re.match(r'.+?(?=<\|endoftext\|>|$)', sample, re.DOTALL | re.MULTILINE)
+            find_sentence = re.match(r'((?:.*?\. ){3}).*$', sample, re.DOTALL | re.MULTILINE)
 
-            # todo only use placeholder if necessary
-            if find_eot is None:
-                find_eot = self.placeholder
+            print(find_eot, find_sentence)
+
+            if find_eot is not None and find_sentence is not None:
+                reply = find_eot if len(find_eot.group(0)) < len(find_sentence.group(1)) else find_sentence
             else:
-                find_eot = find_eot.group(1)
+                reply = find_eot if find_eot is not None else find_sentence
 
-            if find_sentence is None:
-                find_sentence = self.placeholder
+            if reply is None:
+                reply = self.placeholder
             else:
-                find_sentence = find_sentence.group(1)
+                reply = reply.group(reply.lastindex)
 
-            reply = find_eot if len(find_eot) < len(find_sentence) else find_sentence
+            self.conversation = '\n'.join([self.conversation, reply])
+
             await self.send(json.dumps({
                 'type': 'reply',
-                'message': reply,
+                'message': sample,
             }))
 
     def make_response(self, prompt: str):
