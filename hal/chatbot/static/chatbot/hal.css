@@ -465,8 +465,8 @@ label {
     background-clip: border-box;
     -webkit-filter: grayscale(100%);
     filter: grayscale(1);
-    transition: -webkit-filter 10s ease, filter 10s ease;
-    -webkit-transition: -webkit-filter 10s ease, filter 10s ease;
+    transition: -webkit-filter 3s ease, filter 3s ease;
+    -webkit-transition: -webkit-filter 3s ease, filter 3s ease;
 }
 
 .background.color {
@@ -475,6 +475,7 @@ label {
 }
 
 .container {
+    position: relative;
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: auto;
@@ -487,6 +488,10 @@ label {
     align-items: stretch;
     justify-content: flex-start;
     flex-wrap: nowrap;
+}
+
+.flex-align-bottom {
+    flex-direction: column-reverse;
 }
 
 .flex-row {
@@ -675,11 +680,30 @@ input:checked + .button::before {
     min-height: 50px;
     min-width: 200px;
     overflow-y: auto;
+    word-wrap: break-word;
+}
+
+.conversation > :first-child {
+    margin-top: auto !important;
 }
 
 .conversation-text {
     color: #E2E2E2;
     font-size: medium;
+    min-height: min-content;
+    max-width: 90%;
+}
+
+.user-text {
+    float: right;
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+.hal-text {
+    float: left;
+    margin-right: auto;
+    margin-left: 5px;
 }
 
 @media screen and (max-width: 767px) {
@@ -702,7 +726,7 @@ input:checked + .button::before {
     }
 
     .conversation {
-        position: fixed;
+        position: absolute;
         left: 0;
         top: auto;
         right: 0;

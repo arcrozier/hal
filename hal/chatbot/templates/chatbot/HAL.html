@@ -4,13 +4,39 @@
 <head>
     <script>
         console.log(window.location.host);
-        const messageSocket = new WebSocket(
+        let messageSocket = new WebSocket(
             'ws://' + window.location.host + '/input/'
         );
+
+        messageSocket.onclose = function(event) {
+            const $switch = $('.switch-box');
+            $switch.prop('checked', false);
+            $switch.change();
+            messageSocket = new WebSocket(
+                'ws://' + window.location.host + '/input/'
+            );
+        }
 
         messageSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             console.log(data);
+            if (data['type'] === 'reply') {
+                const message = document.createElement("div");
+                message.setAttribute("align", "left");
+                message.classList.add('conversation-text', 'hal-text');
+                message.textContent = data['message'];
+                const conversation = $("#conversation-div");
+                conversation.append(message);
+
+                let scrollOptions = Object();
+                scrollOptions.behavior = 'smooth';
+                scrollOptions.block = 'start';
+
+                message.scrollIntoView(scrollOptions);
+
+            } else if (data['type'] === 'status' && data['message'] === 'on') {
+                $('#background-img').addClass('color');
+            }
         }
     </script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -77,7 +103,6 @@
                             const $lock = $(this).closest('.switch-group').find('.lock-box');
                             $lock.prop('checked', true);
                             $lock.change();
-                            $background.addClass('color');
 
                             $shutdown.pause();
                             $shutdown.currentTime = 0;
@@ -114,7 +139,7 @@
                 </script>
             </form>
         </div>
-        <div id="conversation-div" class="conversation"></div>
+        <div id="conversation-div" class="conversation flex-container flex-column flex-align-bottom"></div>
     </div>
     <div id="input-div" class="input fill">
         <div class="w-form">
@@ -133,22 +158,36 @@
                         <input id="submit-button" type="submit" value="" data-wait=""
                                class="submit-button w-button">
                         <script>
+                            const ENTER_KEY = 13;
+                            const input = $('#Input');
+                            input.keydown(function(event) {
+                                if (event.which === ENTER_KEY) {
+                                    $('#query-form').submit();
+                                    return false;
+                                }
+                            })
                             $('#query-form').submit(function(e) {
-                                const input = $('#Input');
                                 const text = $.trim(input.val());
                                 if (text !== "") {
-                                    const message = document.createElement("p");
+
+                                    const message = document.createElement("div");
                                     message.setAttribute("align", "right");
-                                    message.classList.add('conversation-text');
+                                    message.classList.add('conversation-text', 'user-text');
                                     message.textContent = text;
                                     const conversation = $("#conversation-div");
                                     conversation.append(message);
-                                    console.log("submitting " + text);
+                                    let scrollOptions = Object();
+                                    scrollOptions.behavior = 'smooth';
+                                    scrollOptions.block = 'start';
+
+                                    message.scrollIntoView(scrollOptions);
+
+                                    input.val('');
+
                                     messageSocket.send(JSON.stringify({
                                         'type': 'message',
                                         'message': text,
                                     }));
-                                    input.value = '';
                                 }
                                 e.preventDefault();
                             });
