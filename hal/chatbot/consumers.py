@@ -46,26 +46,26 @@ class MessageConsumer(AsyncWebsocketConsumer):
             self.conversation = '\n'.join([self.conversation, message])
             sample = self.interact_model(self.conversation)
             # todo does not seem to handle multilines
-            find_eot = re.match(r'.+?(?=<\|endoftext\|>|$)', sample, re.DOTALL | re.MULTILINE)
-            find_sentence = re.match(r'((?:.*?\. ){3}).*$', sample, re.DOTALL | re.MULTILINE)
+            find_eot = re.match(r'.+?(?=<\|endoftext\|>|$)', sample, re.DOTALL)
+            find_sentence = re.match(r'(?:.+?[.!?][ \n]){2}', sample, re.DOTALL | re.MULTILINE)
 
             print(find_eot, find_sentence)
 
             if find_eot is not None and find_sentence is not None:
-                reply = find_eot if len(find_eot.group(0)) < len(find_sentence.group(1)) else find_sentence
+                reply = find_eot if len(find_eot.group(0)) < len(find_sentence.group(0)) else find_sentence
             else:
                 reply = find_eot if find_eot is not None else find_sentence
 
             if reply is None:
                 reply = self.placeholder
             else:
-                reply = reply.group(reply.lastindex)
+                reply = reply.group(0)
 
             self.conversation = '\n'.join([self.conversation, reply])
 
             await self.send(json.dumps({
                 'type': 'reply',
-                'message': sample,
+                'message': reply,
             }))
 
     def make_response(self, prompt: str):
