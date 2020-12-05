@@ -1,0 +1,7 @@
+channels~=3.0.2
+Django~=3.1.1
+numpy~=1.18.5
+tensorflow-gpu~=2.3.0
+regex~=2017.4.5
+tqdm~=4.31.1
+uvicorn~=0.12.3
