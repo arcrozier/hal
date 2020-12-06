@@ -1,0 +1,1 @@
+web: gunicorn hal.asgi:application -k uvicorn.workers.UvicornWorker
