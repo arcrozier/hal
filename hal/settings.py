@@ -20,7 +20,7 @@ with open(os.path.join(BASE_DIR, 'secret_key'), 'r') as f:
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['hal-chatbot.azurewebsites.net', "hal-chatbot.herokuapp.com"]
+ALLOWED_HOSTS = ['hal-chatbot.azurewebsites.net']
 
 
 # Application definition
