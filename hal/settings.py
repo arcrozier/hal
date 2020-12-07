@@ -20,11 +20,7 @@ with open(os.path.join(Path(os.path.dirname(__file__)).parent, 'secret_key'), 'r
 
 DEBUG = False
 
-<<<<<<< HEAD:hal/settings.py
 ALLOWED_HOSTS = ['hal-chatbot.azurewebsites.net', "hal-chatbot.herokuapp.com"]
-=======
-ALLOWED_HOSTS = ['hal-chatbot.azurewebsites.net']
->>>>>>> 92c8f81 (Configured settings for deployment):hal/hal/settings.py
 
 
 # Application definition
