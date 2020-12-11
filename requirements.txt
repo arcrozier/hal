@@ -6,3 +6,4 @@ regex~=2017.4.5
 tqdm~=4.31.1
 requests~=2.21.0
 uvicorn
+gunicorn
