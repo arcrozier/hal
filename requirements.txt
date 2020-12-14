@@ -7,3 +7,4 @@ tqdm~=4.31.1
 requests~=2.21.0
 uvicorn
 gunicorn
+httptools
