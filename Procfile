@@ -1,1 +1,1 @@
-web: daphne hal.asgi:application
+web: gunicorn hal.asgi:application -k uvicorn.workers.UvicornWorker
