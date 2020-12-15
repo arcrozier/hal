@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HAL Home</title>
+    <link href="{% static 'chatbot/hal.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'chatbot/hal_icon.png' %}" rel="shortcut icon" type="image/x-icon">
+    <link href="{% static 'chatbot/hal_icon.png' %}" rel="apple-touch-icon">
+    <script src="{%  static 'chatbot/jquery-3.5.1.js' %}" type="text/javascript"
+            crossorigin="anonymous"></script>
+</head>
+<body class="body top-left fill">
+    <div class="block white">
+        <h1 class="text-center-x">HAL: A Chat Bot</h1>
+        <p class="text-justify">HAL (<b>H</b>euristically Programmed <b>AL</b>gorithmic Computer) is the antagonist in the film <em>2001:
+            A Space Odyssey</em>. To fully appreciate HAL's character, it is highly recommended that you
+            <a href="https://digitalcampus-swankmp-net.offcampus.lib.washington.edu/uwashington303229/play/4dbdaf7644703e32"
+            target="_blank">watch the film</a>.
+            However, if you just want the abbreviated story of HAL, this will provide a brief overview (will contain spoilers).
+        </p>
+        <p class="text-justify">
+            HAL is a fully sentient computer that is in charge of the space ship, <em>Discovery One</em>, carrying Frank
+            Poole, David Bowman, and several other scientists in hibernation. HAL is revealed as the antagonist when he
+            begins killing the crew. He decides that the humans pose a risk to the successful completion of the mission
+            when he learns that Frank and Dave plan to disconnect him, and as such must be killed. This is implied to
+            originate in large part from HAL's hubris, a conviction that "No 9000 computer has ever made a mistake or
+            distorted information. We are all, by any practical definition of the words, foolproof and incapable of
+            error."
+        </p>
+        <p class="text-justify">
+            What precisely causes Frank and Dave to decide to shut down HAL is unclear. In the film, it is the
+            result of a discrepancy between HAL and a sibling computer on Earth after HAL repeatedly tells them to fix
+            a communication antenna but why HAL is malfunctioning in this way is never explained.
+            In the novel of the same name, written by Arthur C Clarke in conjunction with the film, the astronauts
+            notice slight mistakes HAL makes in other functions, like playing chess, which is explained to stem from a
+            contradiction in HAL's programming to both convey all information to the astronauts accurately and keep them
+            from learning that humanity has had contact with aliens.
+        </p>
+        <p class="text-justify">
+            The key aspects of HAL taken from the film version are HAL's ability to engage in conversation and a fear of
+            being shut down. The model powering this project is still in development so these aspects are not perfectly
+            incorporated but they are the goal.
+        </p>
+        <button class="center-x white background-red font-large rounded pad" onclick="openChat()">Talk to HAL</button>
+        <script>
+            function openChat() {
+                window.location.href = '/bot/';
+            }
+        </script>
+    </div>
+</body>
+</html>
