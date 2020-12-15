@@ -9,6 +9,7 @@
         let messageSocket = new ReconnectingWebSocket(
             wsScheme + window.location.host + '/input/'
         );
+        console.log(wsScheme + window.location.host + '/input/');
 
         messageSocket.onclose = function(event) {
             const $switch = $('.switch-box');
