@@ -17,7 +17,7 @@
                 $switch.prop('checked', false);
                 $switch.change();
             }
-            messageSocket = new WebSocket(
+            messageSocket = new ReconnectingWebSocket(
                 wsScheme + window.location.host + '/input/'
             );
         }
