@@ -4,6 +4,7 @@ import re
 from typing import Final
 
 from channels.generic.websocket import AsyncWebsocketConsumer
+from tensorflow.python.framework.errors_impl import InvalidArgumentError
 
 
 class MessageConsumer(AsyncWebsocketConsumer):
@@ -15,6 +16,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
         self.model = None
         self.on = False
         self.conversation = ''
+        self.pending = 0
 
     async def connect(self):
         await self.accept()
@@ -44,8 +46,8 @@ class MessageConsumer(AsyncWebsocketConsumer):
         if category == "message" and self.on:
             # may want to store message history and pass it to the model rather than just the latest message
             self.conversation = '\n'.join([self.conversation, message])
+            self.pending += 1
             sample = self.interact_model(self.conversation)
-            # todo does not seem to handle multilines
             find_eot = re.match(r'.+?(?=<\|endoftext\|>|$)', sample, re.DOTALL)
             find_sentence = re.match(r'(?:.+?[.!?][ \n]){2}', sample, re.DOTALL | re.MULTILINE)
 
@@ -67,6 +69,8 @@ class MessageConsumer(AsyncWebsocketConsumer):
                 'type': 'reply',
                 'message': reply,
             }))
+            self.pending -= 1
+        print(self.pending)
 
     def make_response(self, prompt: str):
         # this is where hyper parameter tuning would go
@@ -138,10 +142,14 @@ class MessageConsumer(AsyncWebsocketConsumer):
 
             context_tokens = enc.encode(prompt)
 
-            out = sess.run(output, feed_dict={
-                context: [context_tokens]
-            })[:, len(context_tokens):]
-            text = enc.decode(out[0])
-            print("=" * 40 + " SAMPLE " + "=" * 40)
-            print(text)
-            return text
+            for _ in range(0, 5):
+                try:
+                    out = sess.run(output, feed_dict={
+                        context: [context_tokens]
+                    })[:, len(context_tokens):]
+                    text = enc.decode(out[0])
+                    print("=" * 40 + " SAMPLE " + "=" * 40)
+                    print(text)
+                    return text
+                except InvalidArgumentError as e:
+                    print(str(e))
