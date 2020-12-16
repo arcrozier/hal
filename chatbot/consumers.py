@@ -4,7 +4,6 @@ import re
 from typing import Final
 
 from channels.generic.websocket import AsyncWebsocketConsumer
-from tensorflow.python.framework.errors_impl import InvalidArgumentError
 
 
 class MessageConsumer(AsyncWebsocketConsumer):
@@ -16,7 +15,6 @@ class MessageConsumer(AsyncWebsocketConsumer):
         self.model = None
         self.on = False
         self.conversation = ''
-        self.pending = 0
 
     async def connect(self):
         await self.accept()
@@ -35,6 +33,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
                 # imports necessary dependencies - won't need to be imported later
                 import tensorflow.compat.v1 as tf
                 from .gpt2.src import model, sample, encoder
+                from tensorflow.python.framework.errors_impl import InvalidArgumentError
                 logging.getLogger(__name__).info('Dependencies loaded')
                 self.on = True
                 await self.send(json.dumps({  # tells webpage that the model is ready
@@ -44,9 +43,15 @@ class MessageConsumer(AsyncWebsocketConsumer):
             elif message == "off":
                 self.on = False
         if category == "message" and self.on:
-            # may want to store message history and pass it to the model rather than just the latest message
+
+            # todo doesn't send immediately, waits until all messages are ready to be sent
+            await self.send(json.dumps({
+                'type': 'status',
+                'message': 'typing',
+            }))
+            print('awaiting typing status')
+
             self.conversation = '\n'.join([self.conversation, message])
-            self.pending += 1
             sample = self.interact_model(self.conversation)
             find_eot = re.match(r'.+?(?=<\|endoftext\|>|$)', sample, re.DOTALL)
             find_sentence = re.match(r'(?:.+?[.!?][ \n]){2}', sample, re.DOTALL | re.MULTILINE)
@@ -69,8 +74,11 @@ class MessageConsumer(AsyncWebsocketConsumer):
                 'type': 'reply',
                 'message': reply,
             }))
-            self.pending -= 1
-        print(self.pending)
+
+            await self.send(json.dumps({
+                'type': 'status',
+                'message': 'done typing',
+            }))
 
     def make_response(self, prompt: str):
         # this is where hyper parameter tuning would go
@@ -110,6 +118,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
         import os
         import tensorflow.compat.v1 as tf
         from .gpt2.src import model, sample, encoder
+        from tensorflow.python.framework.errors_impl import InvalidArgumentError
 
         batch_size = 1
 
@@ -137,12 +146,13 @@ class MessageConsumer(AsyncWebsocketConsumer):
             )
 
             saver = tf.train.Saver()
-            ckpt = tf.train.latest_checkpoint(os.path.join(os.path.dirname(__file__), 'gpt2', 'src', 'models', model_name))
+            ckpt = tf.train.latest_checkpoint(os.path.join(os.path.dirname(__file__), 'gpt2', 'src', 'models',
+                                                           model_name))
             saver.restore(sess, ckpt)
 
             context_tokens = enc.encode(prompt)
 
-            for _ in range(0, 5):
+            for _ in range(0, 2):
                 try:
                     out = sess.run(output, feed_dict={
                         context: [context_tokens]
