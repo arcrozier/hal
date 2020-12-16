@@ -11,8 +11,8 @@
     <script src="{%  static 'chatbot/jquery-3.5.1.js' %}" type="text/javascript"
             crossorigin="anonymous"></script>
 </head>
-<body class="body top-left fill">
-    <div class="block white">
+<body class="body scroll-y top-left fill">
+    <div class="block white pad">
         <h1 class="text-center-x">HAL: A Chat Bot</h1>
         <p class="text-justify">HAL (<b>H</b>euristically Programmed <b>AL</b>gorithmic Computer) is the antagonist in the film <em>2001:
             A Space Odyssey</em>. To fully appreciate HAL's character, it is highly recommended that you
@@ -20,7 +20,14 @@
             target="_blank">watch the film</a>.
             However, if you just want the abbreviated story of HAL, this will provide a brief overview (will contain spoilers).
         </p>
-        <p class="text-justify">
+        <button id="spoilers" class="center-x black background-white pad" onclick="showSpoilers()">Spoilers</button>
+        <script>
+            function showSpoilers() {
+                $("#spoilers").hide();
+                $(".spoilers").show();
+            }
+        </script>
+        <p class="text-justify spoilers" hidden>
             HAL is a fully sentient computer that is in charge of the space ship, <em>Discovery One</em>, carrying Frank
             Poole, David Bowman, and several other scientists in hibernation. HAL is revealed as the antagonist when he
             begins killing the crew. He decides that the humans pose a risk to the successful completion of the mission
@@ -29,20 +36,32 @@
             distorted information. We are all, by any practical definition of the words, foolproof and incapable of
             error."
         </p>
-        <p class="text-justify">
+        <p class="text-justify spoilers" hidden>
             What precisely causes Frank and Dave to decide to shut down HAL is unclear. In the film, it is the
             result of a discrepancy between HAL and a sibling computer on Earth after HAL repeatedly tells them to fix
             a communication antenna but why HAL is malfunctioning in this way is never explained.
             In the novel of the same name, written by Arthur C Clarke in conjunction with the film, the astronauts
-            notice slight mistakes HAL makes in other functions, like playing chess, which is explained to stem from a
-            contradiction in HAL's programming to both convey all information to the astronauts accurately and keep them
-            from learning that humanity has had contact with aliens.
+            notice slight mistakes HAL makes in other functions, like playing chess. These errors are explained to stem
+            from a contradiction in HAL's programming to both convey all information to the astronauts accurately and
+            keep them from learning that humanity has had contact with aliens. In this version, HAL kills the astronauts
+            to resolve this contradiction; don't need to lie to them if they're dead.
         </p>
-        <p class="text-justify">
+        <p class="text-justify spoilers" hidden>
             The key aspects of HAL taken from the film version are HAL's ability to engage in conversation and a fear of
             being shut down. The model powering this project is still in development so these aspects are not perfectly
             incorporated but they are the goal.
         </p>
+        <p class="text-justify">
+            This website may use cookies to authenticate your messages. Chat messages you send may be used to improve
+            the model powering this simulation. While content of your messages should never be visible, the model is
+            unpredictable and may regurgitate verbatim data it has been trained on, including your messages. Never tell
+            HAL personally identifying or sensitive information. Developers may also analyze your conversations to
+            improve the model.
+        </p>
+        <p class="text-center-x"><b>
+            By continuing to the chat bot, you agree to the use of cookies and understand that messages sent to HAL are
+            not private.
+        </b></p>
         <button class="center-x white background-red font-large rounded pad" onclick="openChat()">Talk to HAL</button>
         <script>
             function openChat() {
