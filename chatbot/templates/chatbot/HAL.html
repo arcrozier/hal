@@ -11,7 +11,7 @@
         );
         console.log(wsScheme + window.location.host + '/input/');
 
-        messageSocket.onclose = function(event) {
+        {% comment %}messageSocket.onclose = function() {
             const $switch = $('.switch-box');
             if ($switch.prop('checked') === true)
             {
@@ -21,7 +21,7 @@
             messageSocket = new ReconnectingWebSocket(
                 wsScheme + window.location.host + '/input/'
             );
-        }
+        }{% endcomment %}
 
         messageSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
