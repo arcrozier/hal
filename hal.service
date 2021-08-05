@@ -1,0 +1,13 @@
+[Unit]
+Description=HAL Chatbot Server
+Wants=network.target
+After=network.target
+
+[Service]
+ExecStart=/var/www/hal/start.sh
+Restart=always
+RestartSec=10
+KillMode=mixed
+
+[Install]
+WantedBy=default.target
