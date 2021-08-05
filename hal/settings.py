@@ -15,11 +15,11 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "Hello, this is not a secure key. Please change me!"
+SECRET_KEY = os.environ['HAL_KEY']
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['hal-chatbot.azurewebsites.net', "hal-chatbot.herokuapp.com"]
+ALLOWED_HOSTS = ['hal.aracroproducts.com']
 
 
 # Application definition
