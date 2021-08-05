@@ -4,6 +4,7 @@ import re
 from typing import Final
 
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.exceptions import StopConsumer
 
 
 class MessageConsumer(AsyncWebsocketConsumer):
@@ -20,8 +21,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # shut down model
-        pass
+        raise StopConsumer()
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -52,7 +52,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
             print('awaiting typing status')
 
             self.conversation = '\n'.join([self.conversation, message])
-            sample = self.interact_model(self.conversation)
+            sample = await self.interact_model(self.conversation)
             find_eot = re.match(r'.+?(?=<\|endoftext\|>|$)', sample, re.DOTALL)
             find_sentence = re.match(r'(?:.+?[.!?][ \n]){2}', sample, re.DOTALL | re.MULTILINE)
 
@@ -85,7 +85,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
         self.interact_model(prompt, length=1, top_k=40, top_p=0.9)
 
     @staticmethod
-    def interact_model(
+    async def interact_model(
             prompt: str,
             model_name: str = '117M',
             seed: int = None,
