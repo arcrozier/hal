@@ -11,20 +11,20 @@ import os
 from dotenv import load_dotenv
 
 from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
 from django.core.asgi import get_asgi_application
+import django
 
 from chatbot import routing
+
+load_dotenv()
+load_dotenv('/var/local/db_credentials.env')
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hal.settings')
 os.environ['DJANGO_ALLOW_ASYNC_UNSAFE'] = "true"
 
-import django
 django.setup()
 
-from channels.auth import AuthMiddlewareStack
-
-load_dotenv()
-load_dotenv('/var/local/db_credentials.env')
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),
