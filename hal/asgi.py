@@ -7,6 +7,9 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
 """
 
+import sys
+print(sys.path)
+
 import os
 from dotenv import load_dotenv
 
