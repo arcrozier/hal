@@ -15,11 +15,11 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ['HAL_KEY']
+SECRET_KEY = "I am not a secure key rip"
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['hal.aracroproducts.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -116,7 +116,7 @@ USE_TZ = True
 
 STATIC_ROOT = '/var/www/static'
 
-STATIC_URL = 'https://byteme.aracroproducts.com/static/'
+STATIC_URL = 'includes/'
 
 STATICFILES_DIRS = [
     ("chatbot", "/var/www/static/chatbot")
