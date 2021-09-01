@@ -21,5 +21,4 @@ def main():
 
 if __name__ == '__main__':
     load_dotenv()
-    load_dotenv('/var/local/db_credentials.env')
     main()
