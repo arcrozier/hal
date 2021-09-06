@@ -116,7 +116,7 @@ USE_TZ = True
 
 STATIC_ROOT = '/var/www/static'
 
-STATIC_URL = 'includes/'
+STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     ("chatbot", "/var/www/static/chatbot")
