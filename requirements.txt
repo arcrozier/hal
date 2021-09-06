@@ -9,3 +9,4 @@ websockets
 daphne
 Twisted[tls,http2]
 python-dotenv~=0.18.0
+hypercorn~=0.11.2
