@@ -6,7 +6,6 @@ regex~=2017.4.5
 tqdm~=4.31.1
 requests~=2.21.0
 websockets
-daphne
 Twisted[tls,http2]
 python-dotenv~=0.18.0
 daphne~=3.0.2
