@@ -9,7 +9,7 @@ if len(sys.argv) != 2:
 
 model = sys.argv[1]
 
-subdir = os.path.join(os.path.dirname(__file__), 'models', model)
+subdir = os.path.join('models', model)
 if not os.path.exists(subdir):
     os.makedirs(subdir)
 subdir = subdir.replace('\\', '/')  # needed for Windows
@@ -19,7 +19,7 @@ for filename in ['checkpoint', 'encoder.json', 'hparams.json', 'model.ckpt.data-
 
     r = requests.get("https://storage.googleapis.com/gpt-2/" + subdir + "/" + filename, stream=True)
 
-    with open(os.path.join(subdir, filename), 'wb') as f:
+    with open(os.path.join(os.path.dirname(__file__), 'src', subdir, filename), 'wb') as f:
         file_size = int(r.headers["content-length"])
         chunk_size = 1000
         with tqdm(ncols=100, desc="Fetching " + filename, total=file_size, unit_scale=True) as pbar:
