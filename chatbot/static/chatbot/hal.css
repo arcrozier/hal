@@ -271,7 +271,7 @@ blockquote {
     background-color: black;
     padding-right: 5px;
     border-top-right-radius: 5px;
-    box-shadow: 0 0 5px 4px #f33921;
+    box-shadow: 0 0 11px 2px #f33921;
 }
 
 #branding:hover {
