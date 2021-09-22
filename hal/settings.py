@@ -118,9 +118,8 @@ STATIC_ROOT = '/var/www/static'
 
 STATIC_URL = 'https://byteme.aracroproducts.com/static/'
 
-STATICFILES_DIRS = [
-    ("chatbot", "/var/www/static/chatbot")
-]
+STATICFILES_DIRS = []
+
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
