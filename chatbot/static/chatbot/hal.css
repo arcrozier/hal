@@ -263,6 +263,7 @@ blockquote {
 }
 
 #branding {
+    --shadow-speed: 0.5s;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -272,12 +273,14 @@ blockquote {
     padding-right: 5px;
     border-top-right-radius: 5px;
     box-shadow: 0 0 11px 2px #f33921;
+    transition: box-shadow var(--shadow-speed) ease;
+    -webkit-transition: box-shadow var(--shadow-speed) ease;
 }
 
 #branding:hover {
     box-shadow: 0 0 11px 4px #f33921;
-    transition: box-shadow 3s ease;
-    -webkit-transition: box-shadow 3s ease;
+    transition: box-shadow var(--shadow-speed) ease;
+    -webkit-transition: box-shadow var(--shadow-speed) ease;
 }
 
 @font-face {
